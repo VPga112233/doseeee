@@ -1,0 +1,12 @@
+{
+  "name": "dosewindow-pharmeasy-prototype",
+  "version": "1.0.0",
+  "description": "Interactive mobile prototype of DoseWindow integrated into PharmEasy for ProdVerse hackathon",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["pharmeasy", "dosewindow", "prodverse", "prototype", "vitals"],
+  "author": "Team Garde Impériale",
+  "license": "MIT"
+}

@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoseWindow on PharmEasy — Mobile Prototype</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pe: {
+              teal: '#10847e', // PharmEasy signature teal
+              dark: '#0a524e',
+              light: '#f2f8f8',
+              orange: '#f47721',
+              red: '#df3f3f'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    
+    @keyframes alert-glow {
+      0%, 100% { box-shadow: 0 0 12px rgba(220, 38, 38, 0.4); }
+      50% { box-shadow: 0 0 24px rgba(220, 38, 38, 0.85); }
+    }
+    .animate-emergency { animation: alert-glow 1s infinite; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 font-sans selection:bg-teal-500 selection:text-white">
+
+  <!-- Minimal Top Header Bar -->
+  <header class="w-full max-w-md flex items-center justify-between py-2 px-3 mb-2 text-xs">
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded-lg bg-teal-500 flex items-center justify-center font-bold text-slate-950 text-xs shadow-xs">
+        💊
+      </div>
+      <div>
+        <span class="font-bold text-white">DoseWindow</span>
+        <span class="text-[10px] text-teal-400 font-medium ml-1">on PharmEasy</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-[10px] text-slate-400 hidden sm:inline">Change screens using in-app buttons & tabs below</span>
+      <button onclick="resetPrototype()" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
+        🔄 Reset
+      </button>
+    </div>
+  </header>
+
+  <!-- Centered Smartphone Container -->
+  <main class="w-full max-w-[410px] flex justify-center items-center">
+    
+    <div class="w-full bg-slate-950 rounded-[44px] shadow-2xl border-[10px] border-slate-800 overflow-hidden flex flex-col h-[790px] relative ring-1 ring-slate-700/60">
+      
+      <!-- Phone Top Speaker & Camera Notch -->
+      <div class="bg-slate-800 h-6 w-full flex justify-center items-center relative z-40 flex-shrink-0">
+        <div class="w-24 h-4 bg-black rounded-b-2xl flex justify-center items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-slate-900 border border-slate-700"></div>
+          <div class="w-1.5 h-1.5 rounded-full bg-slate-950"></div>
+        </div>
+      </div>
+
+      <!-- Phone Dynamic Scrollable Viewport -->
+      <div class="flex-1 overflow-y-auto relative bg-slate-100 text-slate-900 flex flex-col" id="phoneViewport">
+
+        <!-- ============================================ -->
+        <!-- SCREEN 1: REAL PHARMEASY HOME + FEATURE CARD -->
+        <!-- ============================================ -->
+        <div id="screen_pharmeasy" class="screen-view relative min-h-full">
+          
+          <div class="relative w-full">
+            <!-- Authentic Uploaded PharmEasy Screenshot -->
+            <img src="pharmeasy_home.png" alt="PharmEasy Home UI" class="w-full h-auto block select-none pointer-events-none" />
+            
+            <!-- INTERACTIVE CARD: DoseWindow Active Care in PharmEasy -->
+            <div class="absolute top-[410px] left-3 right-3 z-30">
+              <div onclick="setScreen('matrix')" class="bg-gradient-to-r from-teal-900 via-teal-800 to-emerald-900 text-white rounded-2xl p-3.5 shadow-2xl border-2 border-teal-400 cursor-pointer hover:scale-[1.02] active:scale-[0.99] transition transform group">
+                
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-teal-400 text-teal-950 flex items-center justify-center font-bold text-xs">
+                      DW
+                    </div>
+                    <div>
+                      <span class="text-[10px] uppercase tracking-wider font-extrabold text-teal-300 block">
+                        PharmEasy Active Care
+                      </span>
+                      <h3 class="text-sm font-extrabold leading-none text-white">
+                        DoseWindow Hub
+                      </h3>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Active
+                  </span>
+                </div>
+
+                <div class="bg-teal-950/70 rounded-xl p-2.5 border border-teal-600/30 text-xs mb-2.5">
+                  <div class="flex justify-between items-baseline mb-1">
+                    <span class="text-teal-200 font-medium">Patient: Ramesh Gupta (72)</span>
+                    <span class="text-[11px] font-bold text-teal-300">2 / 4 Doses Taken</span>
+                  </div>
+                  <div class="w-full bg-teal-900/80 rounded-full h-1.5 overflow-hidden">
+                    <div class="bg-teal-400 h-1.5 rounded-full" style="width: 50%"></div>
+                  </div>
+                  <div class="flex justify-between items-center mt-1.5 text-[11px] text-teal-300/90">
+                    <span>Next: <strong>Evening 8:00 PM</strong></span>
+                    <span>Bluetooth Cuff: <strong>Connected ✓</strong></span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs font-bold text-teal-200 group-hover:text-white transition">
+                  <span class="flex items-center gap-1">
+                    <span>Open Schedule & Vitals</span> →
+                  </span>
+                  <span class="text-[11px] bg-teal-500/30 text-teal-100 px-2 py-0.5 rounded-md">
+                    Refill in 11 days
+                  </span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Top Emergency Trigger Quick Banner -->
+            <div class="absolute top-[85px] left-3 right-3 z-30">
+              <button onclick="setScreen('alert')" class="w-full py-2 px-3 rounded-xl bg-red-600/95 text-white text-xs font-bold shadow-lg flex items-center justify-between hover:bg-red-700 transition animate-emergency">
+                <span class="flex items-center gap-1.5">
+                  <span class="text-base">🚨</span>
+                  <span>Simulate Sunday 9:12 PM BP Spike</span>
+                </span>
+                <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-md font-mono">Test 3×3 →</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SCREEN 2: DOSE MATRIX & STRIP REFILL LEDGER -->
+        <!-- ============================================ -->
+        <div id="screen_matrix" class="screen-view p-4 space-y-4 bg-slate-50 min-h-full hidden">
+          
+          <!-- Header with In-App Back Navigation -->
+          <div class="flex items-center justify-between pt-1">
+            <div class="flex items-center gap-2">
+              <button onclick="setScreen('pharmeasy')" class="w-7 h-7 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold hover:bg-slate-100">
+                ←
+              </button>
+              <div>
+                <h2 class="text-sm font-bold text-slate-900 leading-tight">DoseWindow Daily Ledger</h2>
+                <p class="text-[11px] text-slate-500">Rx: Dr. P. Mehta · Max Healthcare</p>
+              </div>
+            </div>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800 font-bold">
+              Sunday
+            </span>
+          </div>
+
+          <!-- Connected Hardware Bar -->
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 shadow-xs">
+              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              <div>
+                <div class="font-bold text-slate-800 text-[11px]">Omron BT Cuff</div>
+                <div class="text-[10px] text-slate-500">Synced 2m ago</div>
+              </div>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 shadow-xs">
+              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              <div>
+                <div class="font-bold text-slate-800 text-[11px]">Smartwatch</div>
+                <div class="text-[10px] text-slate-500">Tap confirmation</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Today's 4 Dose Slots -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Today's Regimen (4 Slots)</span>
+              <span class="text-[11px] text-teal-700 font-semibold">Tap to log</span>
+            </div>
+
+            <!-- Slot 1: Morning (Taken) -->
+            <div class="p-3 bg-white rounded-xl border-l-4 border-l-emerald-500 border border-slate-200 shadow-xs flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-bold text-slate-900">Amlodipine 5mg</span>
+                  <span class="text-[10px] px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-bold rounded">Taken ✓</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Morning · 8:15 AM · Wrist tap confirmed</p>
+              </div>
+              <div class="text-emerald-600 text-base">🟢</div>
+            </div>
+
+            <!-- Slot 2: Afternoon (Taken) -->
+            <div class="p-3 bg-white rounded-xl border-l-4 border-l-emerald-500 border border-slate-200 shadow-xs flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-bold text-slate-900">Metformin 500mg</span>
+                  <span class="text-[10px] px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-bold rounded">Taken ✓</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Afternoon · 1:40 PM · Post-lunch window</p>
+              </div>
+              <div class="text-emerald-600 text-base">🟢</div>
+            </div>
+
+            <!-- Slot 3: Evening (Interactive Pending) -->
+            <div id="doseSlotEvening" class="p-3 bg-amber-50/80 rounded-xl border-l-4 border-l-amber-500 border border-amber-200 shadow-xs">
+              <div class="flex items-center justify-between mb-2">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-xs font-bold text-slate-900">Atorvastatin 20mg</span>
+                    <span id="eveningDoseStatus" class="text-[10px] px-1.5 py-0.2 bg-amber-200 text-amber-900 font-bold rounded">Due Now</span>
+                  </div>
+                  <p class="text-[11px] text-slate-600 mt-0.5">Evening window (7:30 PM - 9:00 PM)</p>
+                </div>
+                <div class="text-amber-600 text-base">🟡</div>
+              </div>
+
+              <div class="flex gap-2 text-xs pt-1">
+                <button onclick="logEveningDose('taken')" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold shadow-xs transition">
+                  ✓ Log Taken
+                </button>
+                <button onclick="openSkipModal()" class="flex-1 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg font-semibold transition">
+                  Skip with Reason
+                </button>
+              </div>
+            </div>
+
+            <!-- Slot 4: Night (Upcoming) -->
+            <div class="p-3 bg-white rounded-xl border-l-4 border-l-slate-300 border border-slate-200 shadow-xs flex items-center justify-between opacity-80">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-bold text-slate-900">Telmisartan 40mg</span>
+                  <span class="text-[10px] px-1.5 py-0.2 bg-slate-100 text-slate-600 font-medium rounded">10:00 PM</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">Night · Bedtime window</p>
+              </div>
+              <div class="text-slate-400 text-xs">Scheduled</div>
+            </div>
+          </div>
+
+          <!-- Commercial Loop: PharmEasy Strip Refill Card -->
+          <div class="bg-gradient-to-r from-teal-800 to-teal-900 text-white p-3.5 rounded-2xl shadow-sm border border-teal-700">
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="text-[11px] font-bold text-teal-300 uppercase">Strip Count Tracker</span>
+              <span class="text-xs font-mono font-bold text-amber-300">Day 19 of 30</span>
+            </div>
+            <h4 class="text-xs font-bold text-white mb-1">
+              Atorvastatin 20mg strip runs out in 11 days
+            </h4>
+            <p class="text-[11px] text-teal-200 mb-3">
+              Pre-fill ready on PharmEasy before the gap happens. Delivered in 4 hours.
+            </p>
+            <button onclick="alert('✅ PharmEasy 1-Tap Refill initiated! Strip will arrive 3 days before depletion.')" class="w-full py-2 bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold rounded-xl text-xs transition shadow-md">
+              1-Tap Refill on PharmEasy (₹149) →
+            </button>
+          </div>
+
+          <!-- In-App Action to Next Step -->
+          <button onclick="setScreen('alert')" class="w-full py-2.5 bg-red-600 text-white font-bold rounded-xl text-xs hover:bg-red-700 transition flex items-center justify-center gap-2">
+            <span>🚨</span> Trigger Sunday 9:12 PM Event Simulation
+          </button>
+
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SCREEN 3: THE 3×3 EMERGENCY ALERT PROTOCOL   -->
+        <!-- ============================================ -->
+        <div id="screen_alert" class="screen-view p-4 space-y-4 bg-slate-900 text-white min-h-full hidden">
+          
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <div class="flex items-center gap-2">
+              <button onclick="setScreen('matrix')" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 text-white flex items-center justify-center text-xs font-bold">
+                ←
+              </button>
+              <div>
+                <span class="text-[10px] text-red-400 font-bold uppercase tracking-wider">Clinical Safety Protocol</span>
+                <h2 class="text-sm font-bold text-white">The 3×3 Emergency Engine</h2>
+              </div>
+            </div>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-red-950 text-red-300 border border-red-700 font-mono">
+              9:12 PM
+            </span>
+          </div>
+
+          <!-- Live Vitals Measurement Card (3A: Measure 3 Times) -->
+          <div class="bg-slate-950 rounded-2xl p-4 border border-red-900/60 shadow-lg space-y-3">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                <span class="text-xs font-bold text-red-400">Bluetooth Cuff Reading Active</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono">Omron 7120</span>
+            </div>
+
+            <!-- 3 Readings sequence -->
+            <div class="grid grid-cols-3 gap-2 text-center pt-1">
+              <div class="bg-slate-900 p-2.5 rounded-xl border border-red-800/50">
+                <div class="text-[10px] text-slate-400">Reading 1</div>
+                <div class="text-sm font-bold text-red-400">178/104</div>
+                <div class="text-[9px] text-slate-500">9:12 PM</div>
+              </div>
+              <div class="bg-slate-900 p-2.5 rounded-xl border border-red-800/50">
+                <div class="text-[10px] text-slate-400">Reading 2</div>
+                <div class="text-sm font-bold text-red-400">176/102</div>
+                <div class="text-[9px] text-slate-500">+1 min</div>
+              </div>
+              <div class="bg-slate-900 p-2.5 rounded-xl border border-red-800/50">
+                <div class="text-[10px] text-slate-400">Reading 3</div>
+                <div class="text-sm font-bold text-red-400">181/106</div>
+                <div class="text-[9px] text-slate-500">+2 min</div>
+              </div>
+            </div>
+
+            <!-- Average of Last Two -->
+            <div class="bg-red-950/60 p-2.5 rounded-xl border border-red-700/60 flex justify-between items-center">
+              <div>
+                <span class="text-[10px] text-red-300 font-semibold block">Average of Last Two (AHA Protocol)</span>
+                <span class="text-lg font-black text-red-200">178 / 104 <span class="text-xs font-normal text-red-300">mmHg</span></span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] px-2 py-0.5 rounded-md bg-red-600 text-white font-bold">
+                  THRESHOLD EXCEEDED
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Symptom Gating Checkbox -->
+          <div class="bg-slate-950 rounded-2xl p-3.5 border border-slate-800 space-y-2">
+            <span class="text-xs font-bold text-slate-200 block">
+              Symptom Check (Answered during re-measure):
+            </span>
+            <div class="flex flex-wrap gap-1.5 text-xs">
+              <span class="px-2.5 py-1 rounded-lg bg-red-900/60 text-red-200 border border-red-700 font-semibold">
+                ✓ Chest Tightness
+              </span>
+              <span class="px-2.5 py-1 rounded-lg bg-red-900/60 text-red-200 border border-red-700 font-semibold">
+                ✓ Dizziness
+              </span>
+              <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-500 border border-slate-800">
+                Breathless (No)
+              </span>
+            </div>
+          </div>
+
+          <!-- 3B: Alert 3 Times Across 3 Channels -->
+          <div class="bg-slate-950 rounded-2xl p-3.5 border border-slate-800 space-y-2.5">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-amber-400">Immediate 3-Channel Escalation</span>
+              <span class="text-[10px] text-emerald-400 font-mono">Dispatched</span>
+            </div>
+
+            <div class="space-y-1.5 text-xs">
+              <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span>📱</span>
+                  <span><strong>Channel 1:</strong> Push Notification</span>
+                </div>
+                <span class="text-[10px] text-emerald-400 font-bold">Delivered</span>
+              </div>
+              <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span>💬</span>
+                  <span><strong>Channel 2:</strong> SMS Alert (No data)</span>
+                </div>
+                <span class="text-[10px] text-emerald-400 font-bold">Sent</span>
+              </div>
+              <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span>📞</span>
+                  <span><strong>Channel 3:</strong> Automated Voice Call</span>
+                </div>
+                <span class="text-[10px] text-amber-400 font-bold animate-pulse">Ringing...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nearest Ambulance & 108 Contact Bar -->
+          <div class="p-3 rounded-xl bg-orange-950/60 border border-orange-700/60 text-xs text-orange-200">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold flex items-center gap-1 text-white">
+                <span>🚑</span> Nearest Emergency Contact Ready
+              </span>
+              <span class="text-[10px] bg-orange-500/30 px-1.5 py-0.5 rounded text-orange-200">Pincode 110034</span>
+            </div>
+            <p class="text-[11px] text-orange-300">
+              108 Emergency Ambulance + Max Super Speciality Hospital (011-27555555) pre-loaded in family alert payload.
+            </p>
+          </div>
+
+          <!-- Transition to Caregiver View -->
+          <button onclick="setScreen('caregiver')" class="w-full py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+            <span>📲</span> See Caregiver's Phone Reception →
+          </button>
+
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SCREEN 4: CAREGIVER'S PHONE RECEPTION VIEW   -->
+        <!-- ============================================ -->
+        <div id="screen_caregiver" class="screen-view p-4 space-y-4 bg-slate-100 min-h-full hidden">
+          
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+            <div class="flex items-center gap-2">
+              <button onclick="setScreen('alert')" class="w-7 h-7 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold">
+                ←
+              </button>
+              <div>
+                <span class="text-[10px] text-purple-700 font-bold uppercase">Daughter's Phone (Bengaluru)</span>
+                <h2 class="text-sm font-bold text-slate-900">Ritu Gupta (Primary Caregiver)</h2>
+              </div>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-bold animate-pulse">
+              INCOMING ALERT
+            </span>
+          </div>
+
+          <!-- The Incoming Emergency Card -->
+          <div class="bg-white rounded-2xl p-4 border-2 border-red-500 shadow-xl space-y-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-600 text-white uppercase tracking-wider">
+                  High Priority Vitals Alert
+                </span>
+                <h3 class="text-base font-extrabold text-slate-900 mt-1">
+                  Baba's BP: 178/104 mmHg
+                </h3>
+                <p class="text-xs text-slate-500">Omron Cuff average (3 readings) · 9:12 PM</p>
+              </div>
+              <span class="text-2xl animate-bounce">🚨</span>
+            </div>
+
+            <!-- Payload details -->
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs space-y-1.5">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Reported Symptoms:</span>
+                <span class="font-bold text-red-600">Chest tightness, Dizziness</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Address to read out:</span>
+                <span class="font-bold text-slate-800 text-right">B-402, Sector 9, Rohini, Delhi</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Nearest Ambulance:</span>
+                <span class="font-bold text-teal-800">108 / Max Hospital (1.2 km)</span>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-2 pt-1">
+              <button id="btnAcknowledge" onclick="handleCaregiverAcknowledge()" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl text-xs shadow-md transition flex items-center justify-center gap-2">
+                <span>📞</span> I'm Calling Him Now (Stop Alerts)
+              </button>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="alert('Dialing 108 Emergency Ambulance for Rohini, Delhi...')" class="py-2 bg-slate-900 hover:bg-black text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-1">
+                  <span>🚑</span> Call 108
+                </button>
+                <button onclick="alert('Calling Neighbour (Mr. Sharma - Next door): +91 98110XXXXX')" class="py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-xl text-xs border border-slate-200 transition flex items-center justify-center gap-1">
+                  <span>🏠</span> Call Neighbour
+                </button>
+              </div>
+            </div>
+
+            <div id="ackStatusBox" class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 font-semibold text-center hidden">
+              ✓ Ritu Gupta tapped "I'm calling him". Retries stopped across all channels!
+            </div>
+
+          </div>
+
+          <!-- Transition to Doctor's Page -->
+          <button onclick="setScreen('doctor')" class="w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+            <span>📋</span> Generate Doctor's Appointment Page →
+          </button>
+
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SCREEN 5: THE DOCTOR'S APPOINTMENT PAGE      -->
+        <!-- ============================================ -->
+        <div id="screen_doctor" class="screen-view p-4 space-y-3.5 bg-white min-h-full hidden text-slate-900">
+          
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+            <div class="flex items-center gap-2">
+              <button onclick="setScreen('caregiver')" class="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold">
+                ←
+              </button>
+              <div>
+                <span class="text-[10px] text-teal-700 font-bold uppercase tracking-wider">Clinical Consult Artifact</span>
+                <h2 class="text-sm font-bold text-slate-900">The 1-Page Appointment Brief</h2>
+              </div>
+            </div>
+            <button onclick="window.print()" class="text-[11px] px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">
+              Print 🖨️
+            </button>
+          </div>
+
+          <!-- Doctor Consult Header -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="font-bold text-slate-900">Ramesh Gupta (72M)</span>
+              <span class="text-[10px] text-slate-500 font-mono">UHID: PE-98214</span>
+            </div>
+            <p class="text-[11px] text-slate-600">
+              Dr. P. Mehta · Cardiologist · Clinic Visit: 10:30 AM
+            </p>
+            <div class="mt-2 flex gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-800 text-[10px] font-bold">Hypertension</span>
+              <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-800 text-[10px] font-bold">Type 2 Diabetes</span>
+            </div>
+          </div>
+
+          <!-- THE MOAT CARD: Correlation Insight -->
+          <div class="p-3 bg-red-50 border-l-4 border-l-red-600 border border-red-200 rounded-xl text-xs">
+            <span class="text-[10px] font-bold text-red-700 uppercase tracking-wider block">
+              ⭐ The DoseWindow Moat (Dose Log ∩ Vitals Log)
+            </span>
+            <p class="font-bold text-slate-900 mt-1">
+              "BP elevated this week (Avg 178/104). Also missed 3 morning doses on days leaving home before 9:00 AM."
+            </p>
+            <p class="text-[11px] text-slate-600 mt-1">
+              No pure pill app or fitness tracker can surface this correlation.
+            </p>
+          </div>
+
+          <!-- 30-Day Adherence vs Vitals Summary -->
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-500 font-medium">30-Day Adherence</span>
+              <div class="text-base font-extrabold text-teal-700 mt-0.5">84%</div>
+              <div class="text-[10px] text-slate-400">vs 50% WHO baseline</div>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-500 font-medium">Sunday Cuff Spike</span>
+              <div class="text-base font-extrabold text-red-600 mt-0.5">178/104</div>
+              <div class="text-[10px] text-slate-400">Averaged · Symptoms tagged</div>
+            </div>
+          </div>
+
+          <!-- 3 Smart Questions Prepared for Doctor -->
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1.5">
+            <span class="font-bold text-slate-800 block text-[11px] uppercase tracking-wider">
+              3 Clinical Questions Prepared from the Log:
+            </span>
+            <div class="flex items-start gap-1.5 text-slate-700 text-[11px]">
+              <span class="font-bold text-teal-700">1.</span>
+              <span>Morning Amlodipine skipped 6 of 9 times when leaving early: Shift timing to after breakfast at work?</span>
+            </div>
+            <div class="flex items-start gap-1.5 text-slate-700 text-[11px]">
+              <span class="font-bold text-teal-700">2.</span>
+              <span>Evaluate evening dizziness reported during Sunday 9:12 PM spike.</span>
+            </div>
+            <div class="flex items-start gap-1.5 text-slate-700 text-[11px]">
+              <span class="font-bold text-teal-700">3.</span>
+              <span>Consider once-daily combination pill to reduce 4-slot scheduling friction.</span>
+            </div>
+          </div>
+
+          <div class="text-center pt-2">
+            <button onclick="setScreen('pharmeasy')" class="text-xs text-teal-700 font-bold hover:underline">
+              ↺ Back to PharmEasy Home
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ============================================ -->
+      <!-- IN-APP PERSISTENT BOTTOM NAVIGATION BAR      -->
+      <!-- ============================================ -->
+      <div class="bg-white border-t border-slate-200 px-1 py-1.5 flex items-center justify-around z-40 shadow-lg text-center flex-shrink-0">
+        <button onclick="setScreen('pharmeasy')" id="appTab_pharmeasy" class="app-tab flex-1 py-1 flex flex-col items-center text-teal-700 font-bold transition">
+          <span class="text-sm">🏠</span>
+          <span class="text-[9px] mt-0.5">PharmEasy</span>
+        </button>
+        <button onclick="setScreen('matrix')" id="appTab_matrix" class="app-tab flex-1 py-1 flex flex-col items-center text-slate-400 hover:text-slate-700 font-medium transition">
+          <span class="text-sm">💊</span>
+          <span class="text-[9px] mt-0.5">Doses</span>
+        </button>
+        <button onclick="setScreen('alert')" id="appTab_alert" class="app-tab flex-1 py-1 flex flex-col items-center text-red-500 hover:text-red-700 font-medium transition">
+          <span class="text-sm animate-pulse">🚨</span>
+          <span class="text-[9px] mt-0.5">3×3 Alert</span>
+        </button>
+        <button onclick="setScreen('caregiver')" id="appTab_caregiver" class="app-tab flex-1 py-1 flex flex-col items-center text-slate-400 hover:text-slate-700 font-medium transition">
+          <span class="text-sm">📲</span>
+          <span class="text-[9px] mt-0.5">Caregiver</span>
+        </button>
+        <button onclick="setScreen('doctor')" id="appTab_doctor" class="app-tab flex-1 py-1 flex flex-col items-center text-slate-400 hover:text-slate-700 font-medium transition">
+          <span class="text-sm">📋</span>
+          <span class="text-[9px] mt-0.5">Doctor</span>
+        </button>
+      </div>
+
+      <!-- Phone Bottom Home Indicator Bar -->
+      <div class="h-4 bg-white flex justify-center items-center flex-shrink-0 z-40">
+        <div class="w-28 h-1 bg-slate-300 rounded-full"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- SKIP REASON MODAL -->
+  <div id="skipModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white text-slate-900 rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-200">
+      <div class="flex justify-between items-start mb-2">
+        <div>
+          <span class="text-[10px] font-bold text-amber-600 uppercase">Skip Logging</span>
+          <h3 class="text-base font-bold text-slate-900">Atorvastatin 20mg</h3>
+        </div>
+        <button onclick="closeSkipModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-bold">
+          ✕
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-600 mb-3">
+        Why are you skipping this evening dose? Capturing the reason trains your schedule.
+      </p>
+
+      <div class="space-y-2 mb-4 text-xs font-medium">
+        <button onclick="confirmSkip('Felt unwell')" class="w-full p-2.5 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 text-left transition flex items-center gap-2">
+          <span>🤢</span> Felt unwell / Nauseous
+        </button>
+        <button onclick="confirmSkip('Ate dinner late')" class="w-full p-2.5 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 text-left transition flex items-center gap-2">
+          <span>🍽️</span> Ate dinner late (Timing mismatch)
+        </button>
+        <button onclick="confirmSkip('Ran out of strip')" class="w-full p-2.5 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 text-left transition flex items-center gap-2">
+          <span>📦</span> Ran out of tablets (Refill needed)
+        </button>
+        <button onclick="confirmSkip('Asleep early')" class="w-full p-2.5 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 text-left transition flex items-center gap-2">
+          <span>😴</span> Was already asleep
+        </button>
+      </div>
+
+      <button onclick="closeSkipModal()" class="w-full py-2 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    let currentScreen = 'pharmeasy';
+
+    function setScreen(screenId) {
+      currentScreen = screenId;
+      document.querySelectorAll('.screen-view').forEach(s => s.classList.add('hidden'));
+      const active = document.getElementById(`screen_${screenId}`);
+      if (active) active.classList.remove('hidden');
+
+      // Update in-app bottom navigation tabs
+      document.querySelectorAll('.app-tab').forEach(tab => {
+        tab.className = "app-tab flex-1 py-1 flex flex-col items-center text-slate-400 hover:text-slate-700 font-medium transition";
+      });
+      const activeTab = document.getElementById(`appTab_${screenId}`);
+      if (activeTab) {
+        if (screenId === 'alert') {
+          activeTab.className = "app-tab flex-1 py-1 flex flex-col items-center text-red-600 font-bold transition scale-105";
+        } else {
+          activeTab.className = "app-tab flex-1 py-1 flex flex-col items-center text-teal-700 font-bold transition scale-105";
+        }
+      }
+
+      // Scroll phone body to top
+      const vp = document.getElementById('phoneViewport');
+      if (vp) vp.scrollTop = 0;
+    }
+
+    function logEveningDose(status) {
+      const slot = document.getElementById('doseSlotEvening');
+      slot.className = "p-3 bg-white rounded-xl border-l-4 border-l-emerald-500 border border-slate-200 shadow-xs flex items-center justify-between";
+      slot.innerHTML = `
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs font-bold text-slate-900">Atorvastatin 20mg</span>
+            <span class="text-[10px] px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-bold rounded">Taken ✓</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-0.5">Evening · Logged via 1-tap</p>
+        </div>
+        <div class="text-emerald-600 text-base">🟢</div>
+      `;
+    }
+
+    function openSkipModal() {
+      document.getElementById('skipModal').classList.remove('hidden');
+    }
+
+    function closeSkipModal() {
+      document.getElementById('skipModal').classList.add('hidden');
+    }
+
+    function confirmSkip(reason) {
+      closeSkipModal();
+      const slot = document.getElementById('doseSlotEvening');
+      slot.className = "p-3 bg-white rounded-xl border-l-4 border-l-red-500 border border-slate-200 shadow-xs flex items-center justify-between";
+      slot.innerHTML = `
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs font-bold text-slate-900">Atorvastatin 20mg</span>
+            <span class="text-[10px] px-1.5 py-0.2 bg-red-100 text-red-800 font-bold rounded">Skipped: ${reason}</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-0.5">Captured for Doctor's Appointment Page</p>
+        </div>
+        <div class="text-red-500 text-base">🔴</div>
+      `;
+    }
+
+    function handleCaregiverAcknowledge() {
+      document.getElementById('btnAcknowledge').classList.add('hidden');
+      document.getElementById('ackStatusBox').classList.remove('hidden');
+    }
+
+    function resetPrototype() {
+      setScreen('pharmeasy');
+      const slot = document.getElementById('doseSlotEvening');
+      slot.className = "p-3 bg-amber-50/80 rounded-xl border-l-4 border-l-amber-500 border border-amber-200 shadow-xs";
+      slot.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-bold text-slate-900">Atorvastatin 20mg</span>
+              <span id="eveningDoseStatus" class="text-[10px] px-1.5 py-0.2 bg-amber-200 text-amber-900 font-bold rounded">Due Now</span>
+            </div>
+            <p class="text-[11px] text-slate-600 mt-0.5">Evening window (7:30 PM - 9:00 PM)</p>
+          </div>
+          <div class="text-amber-600 text-base">🟡</div>
+        </div>
+
+        <div class="flex gap-2 text-xs pt-1">
+          <button onclick="logEveningDose('taken')" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold shadow-xs transition">
+            ✓ Log Taken
+          </button>
+          <button onclick="openSkipModal()" class="flex-1 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg font-semibold transition">
+            Skip with Reason
+          </button>
+        </div>
+      `;
+      const btnAck = document.getElementById('btnAcknowledge');
+      if (btnAck) btnAck.classList.remove('hidden');
+      const ackBox = document.getElementById('ackStatusBox');
+      if (ackBox) ackBox.classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
